@@ -12,6 +12,20 @@ app.use(express.json())
 app.use(cors())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
+app.use((req, res, next) => {
+  const logEntry = `${new Date().toISOString()} - ${req.method} ${
+    req.path
+  } - Request Body: ${JSON.stringify(req.body)}\n`
+  fs.appendFile('log.txt', logEntry)
+  res.on('finish', () => {
+    const responseLog = `${new Date().toISOString()} - ${req.method} ${
+      req.path
+    } - Response Status: ${res.statusCode}\n`
+    fs.appendFile('log.txt', responseLog)
+  })
+  next()
+})
+
 app.get('/posts', async (req, res) => {
   try {
     const posts = await getAllPosts()
@@ -69,6 +83,26 @@ app.put('/posts/:id', async (req, res) => {
   } catch (error) {
     res.status(500).send(error.message)
   }
+})
+
+app.use((req, res) => {
+  res.status(404).send('404 Not Found: The requested endpoint does not exist.')
+})
+
+app.use((req, res, next) => {
+  if (
+    req.method !== 'GET' &&
+    req.method !== 'POST' &&
+    req.method !== 'PUT' &&
+    req.method !== 'DELETE'
+  ) {
+    return res
+      .status(501)
+      .send(
+        '501 Not Implemented: The request method is not supported by the server and cannot be handled.',
+      )
+  }
+  return next()
 })
 
 const port = 5000
