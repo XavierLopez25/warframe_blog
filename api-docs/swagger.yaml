@@ -1,0 +1,103 @@
+swagger: '2.0'
+info:
+  description: 'API Warframe Builds'
+  version: '1.0.0'
+  title: 'API del Blog de Builds de Warframe :)'
+host: 'localhost:5000'
+basePath: '/'
+schemes:
+  - 'http'
+paths:
+  /posts:
+    get:
+      summary: 'Obtiene todos los posts publicados hasta el momento mostrando el título, contenido, warframe, build, formas requeridas e imagen de la build en formato base64 del post.'
+      responses:
+        200:
+          description: 'Una lista de posts de las publicaciones de build acerca de armas/warframes.'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/Post'
+    post:
+      summary: 'Crea un nuevo post, se tendrán que ingresar el título, contenido, warframe, build, formas requeridas e imagen de la build en formato base64 del post..'
+      consumes:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Información del post a crear tal como el título, contenido, warframe, build, formas requeridas e imagen de la build en formato base64 del post.'
+          required: true
+          schema:
+            $ref: '#/definitions/Post'
+      responses:
+        200:
+          description: 'Post creado exitosamente.'
+
+  /posts/{postId}:
+    get:
+      summary: 'Obtiene un post específico por ID.'
+      parameters:
+        - in: 'path'
+          name: 'postId'
+          required: true
+          type: 'integer'
+          description: 'El ID del post a obtener'
+      responses:
+        200:
+          description: 'Detalles del post solicitado.'
+          schema:
+            $ref: '#/definitions/Post'
+        404:
+          description: 'Post no encontrado.'
+
+    put:
+      summary: 'Actualiza un post existente.'
+      consumes:
+        - 'application/json'
+      parameters:
+        - in: 'path'
+          name: 'postId'
+          required: true
+          type: 'integer'
+          description: 'El ID del post a actualizar'
+        - in: 'body'
+          name: 'body'
+          description: 'Información actualizada del post'
+          required: true
+          schema:
+            $ref: '#/definitions/Post'
+      responses:
+        200:
+          description: 'Post actualizado exitosamente.'
+        404:
+          description: 'Post no encontrado.'
+
+    delete:
+      summary: 'Elimina un post específico.'
+      parameters:
+        - in: 'path'
+          name: 'postId'
+          required: true
+          type: 'integer'
+          description: 'El ID del post a eliminar'
+      responses:
+        200:
+          description: 'Post eliminado exitosamente.'
+        404:
+          description: 'Post no encontrado.'
+definitions:
+  Post:
+    type: 'object'
+    properties:
+      title:
+        type: 'string'
+      content:
+        type: 'string'
+      warframe:
+        type: 'string'
+      build:
+        type: 'string'
+      formas_required:
+        type: 'integer'
+      image_base64:
+        type: 'string'
