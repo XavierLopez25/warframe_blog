@@ -97,7 +97,7 @@ definitions:
         type: 'string'
       build:
         type: 'string'
-      formas_required:
+      formasRequired:
         type: 'integer'
-      image_base64:
+      imageBase64:
         type: 'string'
