@@ -1,0 +1,23 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": "airbnb-base",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": ["error", "never"],
+    "object-curly-newline": "off", //Set object-curly-newline off because of VSC extension Prettier conflict
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "ignorePackages" //Set import/extensions to never because of ERR_MODULE_NOT_FOUND when eliminating ".js" extensions from file imports
+      }
+    ],
+    "no-console": 0
+  }
+}
