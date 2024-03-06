@@ -114,16 +114,16 @@ app.put('/posts/:id', async (req, res) => {
 
 // Middleware para manejar solicitudes a endpoints no encontrados
 app.use((req, res) => {
-  res.status(404).send('404 Not Found: The requested endpoint does not exist.')
+  res.status(400).send('400 (404) Not Found: The requested endpoint does not exist.')
 })
 
 // Middleware para manejar métodos HTTP no implementados
 app.use((req, res, next) => {
   if (
-    req.method !== 'GET'
-    && req.method !== 'POST'
-    && req.method !== 'PUT'
-    && req.method !== 'DELETE'
+    req.method !== 'GET' &&
+    req.method !== 'POST' &&
+    req.method !== 'PUT' &&
+    req.method !== 'DELETE'
   ) {
     return res
       .status(501)
